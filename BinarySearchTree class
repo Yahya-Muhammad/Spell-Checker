@@ -1,0 +1,141 @@
+import java.util.LinkedList;
+import java.util.Queue;
+public class BinarySearchTree {
+    TreeNode root;
+    BinarySearchTree() {
+        this.root = null;
+    }
+    boolean isEmpty() {
+        return root == null;
+    }
+    void insert(String d) {
+        if (isEmpty()) {
+            root = new TreeNode(d);
+            return;
+        }
+        TreeNode current = root;
+        while (true) {
+            if (d.compareTo(current.data) < 0) {
+                if (current.left != null)
+                    current = current.left;
+                else {
+                    current.left = new TreeNode(d);
+                    break; }
+            }
+            else if (d.compareTo(current.data) > 0) {
+                if (current.right != null)
+                    current = current.right;
+                else {
+                    current.right = new TreeNode(d);
+                    break; }
+            }
+            else break;
+        }
+    }
+    void printInorder(TreeNode node) {
+        if (node == null)
+            return;
+            printInorder(node.left);
+            System.out.print(node.data + " ");
+            printInorder(node.right);
+        }
+    void printPostorder(TreeNode node) {
+        if (node == null)
+            return;
+        printPostorder(node.left);
+        printPostorder(node.right);
+        System.out.print(node.data + " ");
+    }
+    void printPreorder(TreeNode node) {
+        if (node == null)
+            return;
+        System.out.print(node.data + " ");
+        printPreorder(node.left);
+        printPreorder(node.right);
+    }
+    void printBfs() {
+        Queue<TreeNode> q = new LinkedList<TreeNode>();
+        if(!isEmpty()) {
+            q.add(root);
+            while(!q.isEmpty()) {
+                TreeNode n = q.remove();
+                System.out.print(n.data + " ");
+                if(n.left != null)
+                    q.add(n.left);
+                if(n.right != null)
+                    q.add(n.right);}
+        }
+    }
+    int getSize(TreeNode root) {
+        if (root == null) {
+            return 0;
+        } else {
+            return (getSize(root.left) + 1 + getSize(root.right));
+        }
+    }
+    int getHeight() {
+        return height(root);
+    }
+    int height(TreeNode root) {
+        if (root == null)
+            return -1;
+        return Math.max(height(root.left), height(root.right)) + 1;
+    }
+    TreeNode leafWord(TreeNode root, String word) {
+        if (word.compareTo(root.data) < 0) {
+            if (root.left == null)
+                return root;
+            return leafWord(root.left, word);
+        }
+        else if (word.compareTo(root.data) > 0) {
+            if (root.right == null)
+                return root;
+            return leafWord(root.right, word);
+        }
+        else {
+            return root;
+        }
+    }
+    TreeNode inorderSuccessor(TreeNode root, TreeNode n) {
+        if (n.right != null)
+            return minValue(n.right);
+        TreeNode successor = null;
+        while (root != null) {
+            if (n.data.compareTo(root.data) < 0) {
+                successor = root;
+                root = root.left;
+            } else if (n.data.compareTo(root.data) > 0)
+                root = root.right;
+            else
+                break;
+        }
+        return successor;
+    }
+    TreeNode minValue(TreeNode root) {
+        TreeNode current = root;
+        while (current.left != null)
+            current = current.left;
+        return current;
+        }
+    TreeNode inorderPredecessor(TreeNode root, TreeNode n) {
+        if (n.left != null)
+            return maxValue(n.left);
+        TreeNode predecessor = null;
+        while (root != null) {
+            if (n.data.compareTo(root.data) > 0) {
+                predecessor = root;
+                root = root.right;
+            } else if (n.data.compareTo(root.data) < 0)
+                root = root.left;
+            else
+                break;
+        }
+        return predecessor;
+    }
+    TreeNode maxValue(TreeNode root) {
+        TreeNode current = root;
+        while (current.right != null)
+            current = current.right;
+        return current;
+    }
+}
