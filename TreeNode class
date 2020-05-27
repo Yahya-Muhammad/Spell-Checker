@@ -1,0 +1,8 @@
+public class TreeNode {
+    String data;
+    TreeNode left, right;
+    TreeNode(String d) {
+        data = d;
+        left = right = null;
+    }
+}
